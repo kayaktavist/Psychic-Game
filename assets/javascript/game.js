@@ -27,7 +27,7 @@
 
 //once they're gone, record loss and reset
 
-console.log("Hello!!")
+
 
 var computerChoices = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
 var wins = 0;
@@ -39,44 +39,35 @@ var winsTarget = document.getElementById("wins");
 var lossesTarget = document.getElementById("losses");
 var gleftTarget = document.getElementById("gleft");
 var guessesTarget = document.getElementById("guesses");
-
-document.onkeyup = function(event) {
-
-
-    
-    // Determines which key was pressed.
-var userInput = event.key; 
-
-guesses.push(userInput);
-
-
-    // Randomly chooses a choice from the options array. This is the Computer's guess.
 var computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
 
+document.onkeyup = function (event) {
+    // Determines which key was pressed.
+    var userInput = event.key.toLowerCase();
+    if (event.which >= 65 && event.which <= 90 && guesses.indexOf(userInput) === -1) {
+        gleft--;
+        guesses.push(userInput);
 
 
-    // This logic determines the outcome of the game (win/loss/tie), and increments the appropriate number
-if (guesses === computerGuess) {
-      wins++;
-       
+        // Randomly chooses a choice from the options array. This is the Computer's guess.
+
+        // This logic determines the outcome of the game (win/loss/tie), and increments the appropriate number
+        if (userInput === computerGuess) {
+            wins++;
+            gleft = 9;
+            guesses = [];
+        } else if (gleft === 0) {
+            losses++;
+            gleft = 9;
+            guesses = [];
+        }
+
+
+        // Display the user and computer guesses, and wins/losses/ties.
+
+        winsTarget.textContent = "wins: " + wins;
+        lossesTarget.textContent = "losses: " + losses;
+        gleftTarget.textContent = "Guesses left: " + gleft;
+        guessesTarget.textContent = "Your guesses so far: " + guesses;
     }
-if (userInput !== computerGuess){gleft--};
-   
-
-if (gleft === 0){losses++; gleft = 9}
-
-
-
-console.log(losses)
-   
-
-      
-
-// Display the user and computer guesses, and wins/losses/ties.
-
-    winsTarget.textContent = "wins: " + wins;
-    lossesTarget.textContent = "losses: " + losses;
-    gleftTarget.textContent = "Guesses left: " + gleft;
-    guessesTarget.textContent = "Your guesses so far: " + guesses;
-    
 }
